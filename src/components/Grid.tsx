@@ -13,13 +13,13 @@ const Cell: React.FC<CellProps> = ({ letter, status = 'empty', index, isCurrent 
   const isDash = letter === '-';
 
   const getStatusClasses = () => {
-    if (isDash) return 'bg-zinc-100 border-zinc-200 text-zinc-400';
+    if (isDash) return 'bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-400 dark:text-zinc-500';
     switch (status) {
       case 'correct': return 'bg-emerald-500 border-emerald-500 text-white shadow-lg shadow-emerald-500/20';
       case 'present': return 'bg-amber-400 border-amber-400 text-white shadow-lg shadow-amber-400/20';
-      case 'absent': return 'bg-zinc-400 border-zinc-400 text-white';
-      case 'tbd': return 'border-zinc-400 text-zinc-900';
-      default: return 'border-zinc-200 text-zinc-900';
+      case 'absent': return 'bg-zinc-400 dark:bg-zinc-700 border-zinc-400 dark:border-zinc-700 text-white dark:text-zinc-300';
+      case 'tbd': return 'border-zinc-400 dark:border-zinc-500 text-zinc-900 dark:text-zinc-100';
+      default: return 'border-zinc-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100';
     }
   };
 
@@ -35,7 +35,7 @@ const Cell: React.FC<CellProps> = ({ letter, status = 'empty', index, isCurrent 
         w-12 h-12 sm:w-14 sm:h-14 border-2 flex items-center justify-center 
         text-xl sm:text-2xl font-black uppercase rounded-xl select-none transition-all duration-500
         ${getStatusClasses()}
-        ${letter && status === 'empty' && !isDash ? 'border-zinc-400 scale-105' : ''}
+        ${letter && status === 'empty' && !isDash ? 'border-zinc-400 dark:border-zinc-500 scale-105' : ''}
       `}
     >
       {letter}

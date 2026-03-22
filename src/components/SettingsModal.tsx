@@ -53,21 +53,21 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh]"
+        className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh] border border-transparent dark:border-zinc-800"
       >
-        <div className="flex items-center justify-between p-6 border-b border-zinc-100">
+        <div className="flex items-center justify-between p-6 border-b border-zinc-100 dark:border-zinc-800">
           <div className="flex items-center gap-2">
-            <Settings2 size={20} className="text-zinc-900" />
-            <h2 className="text-xl font-bold">Custom Game Settings</h2>
+            <Settings2 size={20} className="text-zinc-900 dark:text-zinc-100" />
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Custom Game Settings</h2>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-zinc-100 rounded-full transition-colors">
+          <button onClick={onClose} className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
             <X size={20} className="text-zinc-400" />
           </button>
         </div>
 
         <div className="p-6 overflow-y-auto flex-1 space-y-6">
           <section>
-            <label className="block text-sm font-bold text-zinc-900 mb-2 uppercase tracking-wider">
+            <label className="block text-sm font-bold text-zinc-900 dark:text-zinc-100 mb-2 uppercase tracking-wider">
               Attempts Allowed ({attempts})
             </label>
             <input
@@ -76,7 +76,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               max="10"
               value={attempts}
               onChange={(e) => setAttempts(parseInt(e.target.value))}
-              className="w-full h-2 bg-zinc-200 rounded-lg appearance-none cursor-pointer accent-zinc-900"
+              className="w-full h-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-zinc-900 dark:accent-zinc-100"
             />
             <div className="flex justify-between text-[10px] text-zinc-400 mt-1 font-bold">
               <span>1 ATTEMPT</span>
@@ -86,12 +86,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
           <section>
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-sm font-bold text-zinc-900 uppercase tracking-wider">
+              <label className="block text-sm font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">
                 Custom Words / Phrases
               </label>
               <button
                 onClick={handleAddWord}
-                className="text-xs font-bold bg-zinc-900 text-white px-2 py-1 rounded flex items-center gap-1 hover:bg-zinc-800 transition-colors"
+                className="text-xs font-bold bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-2 py-1 rounded flex items-center gap-1 hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
               >
                 <Plus size={14} /> ADD
               </button>
@@ -104,7 +104,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     value={word}
                     onChange={(e) => handleWordChange(index, e.target.value)}
                     placeholder="MY WORD"
-                    className="flex-1 border-2 border-zinc-100 rounded-lg px-3 py-2 font-mono font-bold focus:border-zinc-900 outline-none transition-colors"
+                    className="flex-1 border-2 border-zinc-100 dark:border-zinc-700 bg-transparent dark:text-white rounded-lg px-3 py-2 font-mono font-bold focus:border-zinc-900 dark:focus:border-zinc-500 outline-none transition-colors"
                   />
                   <button
                     onClick={() => handleRemoveWord(index)}
@@ -121,10 +121,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           </section>
         </div>
 
-        <div className="p-6 border-t border-zinc-100">
+        <div className="p-6 border-t border-zinc-100 dark:border-zinc-800">
           <button
             onClick={handleSave}
-            className="w-full py-3 bg-zinc-900 text-white rounded-xl font-bold hover:bg-zinc-800 transition-colors"
+            className="w-full py-3 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-xl font-bold hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
           >
             Save & Start Custom Game
           </button>

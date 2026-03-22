@@ -5,7 +5,7 @@ import { Keyboard } from './components/Keyboard';
 import { SettingsModal } from './components/SettingsModal';
 import { WORDS, MAX_GUESSES, WORD_LENGTH } from './constants';
 import { GameStatus, GuessLetter, LetterStatus } from './types';
-import { RefreshCw, Trophy, XCircle, Info, Settings2, ChevronRight } from 'lucide-react';
+import { RefreshCw, Trophy, XCircle, Info, Settings2, ChevronRight, Sun, Moon } from 'lucide-react';
 
 export default function App() {
   const [customWords, setCustomWords] = useState<string[]>([]);
@@ -22,6 +22,24 @@ export default function App() {
   const [showModal, setShowModal] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [message, setMessage] = useState('');
+
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('wordle-theme');
+      return saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('wordle-theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('wordle-theme', 'light');
+    }
+  }, [isDarkMode]);
 
   const shuffleArray = <T,>(array: T[]): T[] => {
     const newArray = [...array];
@@ -203,35 +221,42 @@ export default function App() {
   const hasMoreWords = isCustomMode && currentWordIndex < customWords.length - 1;
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-zinc-950 transition-colors duration-200">
       {/* Header */}
-      <header className="flex items-center justify-between px-4 py-3 border-b border-zinc-100">
+      <header className="flex items-center justify-between px-4 py-3 border-b border-zinc-100 dark:border-zinc-800 transition-colors duration-200">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-zinc-900 rounded flex items-center justify-center text-white font-bold">W</div>
-          <h1 className="text-xl font-bold tracking-tight">SHAINA'S WORDLE</h1>
+          <div className="w-8 h-8 bg-zinc-900 dark:bg-zinc-100 rounded flex items-center justify-center text-white dark:text-zinc-900 font-bold transition-colors">W</div>
+          <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 transition-colors">SHAINA'S WORDLE</h1>
           {isCustomMode && (
-            <span className="bg-zinc-100 text-zinc-500 text-[10px] font-bold px-2 py-0.5 rounded-full ml-2">
+            <span className="bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 text-[10px] font-bold px-2 py-0.5 rounded-full ml-2 transition-colors">
               CUSTOM {currentWordIndex + 1}/{customWords.length}
             </span>
           )}
         </div>
         <div className="flex items-center gap-2 sm:gap-4">
           <button 
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
+            title="Toggle Theme"
+          >
+            {isDarkMode ? <Sun size={20} className="text-zinc-600 dark:text-zinc-400" /> : <Moon size={20} className="text-zinc-600 dark:text-zinc-400" />}
+          </button>
+          <button 
             onClick={() => initGame()}
-            className="p-2 hover:bg-zinc-100 rounded-full transition-colors"
+            className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
             title="Restart Current Word"
           >
-            <RefreshCw size={20} className="text-zinc-600" />
+            <RefreshCw size={20} className="text-zinc-600 dark:text-zinc-400" />
           </button>
           <button 
             onClick={() => setShowSettings(true)}
-            className="p-2 hover:bg-zinc-100 rounded-full transition-colors"
+            className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors"
             title="Settings"
           >
-            <Settings2 size={20} className="text-zinc-600" />
+            <Settings2 size={20} className="text-zinc-600 dark:text-zinc-400" />
           </button>
-          <button className="p-2 hover:bg-zinc-100 rounded-full transition-colors">
-            <Info size={20} className="text-zinc-600" />
+          <button className="p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
+            <Info size={20} className="text-zinc-600 dark:text-zinc-400" />
           </button>
         </div>
       </header>
@@ -244,7 +269,7 @@ export default function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="fixed top-20 z-50 bg-zinc-900 text-white px-4 py-2 rounded shadow-lg font-medium text-sm"
+              className="fixed top-20 z-50 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 px-4 py-2 rounded shadow-lg font-medium text-sm transition-colors"
             >
               {message}
             </motion.div>
@@ -286,25 +311,25 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center border border-zinc-100"
+              className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center border border-zinc-100 dark:border-zinc-800 transition-colors"
             >
               <div className="flex justify-center mb-4">
                 {status === 'won' ? (
-                  <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
+                  <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/40 rounded-full flex items-center justify-center text-emerald-600 dark:text-emerald-400 transition-colors">
                     <Trophy size={32} />
                   </div>
                 ) : (
-                  <div className="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center text-rose-600">
+                  <div className="w-16 h-16 bg-rose-100 dark:bg-rose-900/40 rounded-full flex items-center justify-center text-rose-600 dark:text-rose-400 transition-colors">
                     <XCircle size={32} />
                   </div>
                 )}
               </div>
 
-              <h2 className="text-2xl font-bold mb-2">
+              <h2 className="text-2xl font-bold mb-2 text-zinc-900 dark:text-zinc-100 transition-colors">
                 {status === 'won' ? 'Magnificent!' : 'Game Over'}
               </h2>
               
-              <p className="text-zinc-500 mb-6">
+              <p className="text-zinc-500 dark:text-zinc-400 mb-6 transition-colors">
                 {status === 'won' 
                   ? `You guessed the word in ${guesses.length} ${guesses.length === 1 ? 'try' : 'tries'}!` 
                   : `The word was ${targetWord}. Better luck next time!`}
@@ -325,14 +350,14 @@ export default function App() {
                   <>
                     <button
                       onClick={() => initGame()}
-                      className="w-full py-3 bg-zinc-900 text-white rounded-xl font-bold hover:bg-zinc-800 transition-colors flex items-center justify-center gap-2"
+                      className="w-full py-3 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-xl font-bold hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2"
                     >
                       <RefreshCw size={18} />
                       Try Again
                     </button>
                     <button
                       onClick={() => initGame(true)}
-                      className="w-full py-3 bg-zinc-100 text-zinc-600 rounded-xl font-bold hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2"
+                      className="w-full py-3 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 rounded-xl font-bold hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors flex items-center justify-center gap-2"
                     >
                       Skip to Next
                       <ChevronRight size={18} />
@@ -351,7 +376,7 @@ export default function App() {
                         initGame();
                       }
                     }}
-                    className="w-full py-3 bg-zinc-900 text-white rounded-xl font-bold hover:bg-zinc-800 transition-colors flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-xl font-bold hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2"
                   >
                     <RefreshCw size={18} />
                     {isCustomMode ? 'Restart List' : 'Play Again'}
